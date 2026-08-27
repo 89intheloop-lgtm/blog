@@ -7,9 +7,11 @@ interface Props {
   date: Date;
   readingTime?: string;
   image?: string;
+  tags?: string[];
+  priority?: boolean;
 }
 
-const { title, description, href, category, date, readingTime, image } = Astro.props;
+const { title, description, href, category, date, readingTime, image, tags = [], priority = false } = Astro.props;
 const formatted = date.toLocaleDateString('en-US', {
   year: 'numeric',
   month: 'short',
@@ -18,10 +20,18 @@ const formatted = date.toLocaleDateString('en-US', {
 ---
 
 <article>
-  <a class="article-card" href={href}>
+  <a class="article-card" href={href} data-post-tags={tags.join(',')}>
     {
       image ? (
-        <img src={image} alt="" loading="lazy" decoding="async" width="640" height="360" />
+        <img
+          src={image}
+          alt=""
+          loading={priority ? 'eager' : 'lazy'}
+          fetchpriority={priority ? 'high' : undefined}
+          decoding="async"
+          width="640"
+          height="360"
+        />
       ) : (
         <div class="article-cover" aria-hidden="true"></div>
       )

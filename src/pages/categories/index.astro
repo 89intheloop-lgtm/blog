@@ -1,15 +1,35 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { categories } from '../../data/site';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { categories, siteConfig } from '../../data/site';
+import { breadcrumbJsonLd, webPageJsonLd } from '../../utils/seo';
+
+const title = 'Browse Topics: AI Tools, Automation & Coding';
+const description =
+  'Browse Build Log categories covering AI tools, AI automation, web development, beginner coding guides, developer productivity, and learning-in-public notes.';
+const jsonLd = [
+  webPageJsonLd({
+    type: 'CollectionPage',
+    path: '/categories/',
+    name: title,
+    description,
+  }),
+  breadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    { name: 'Categories', path: '/categories/' },
+  ]),
+];
 ---
 
 <BaseLayout
-  title="Categories"
-  description="Browse blog categories covering AI tools, AI automation, web development, beginner guides, and developer productivity."
+  seoTitle={`${title} | ${siteConfig.name}`}
+  description={description}
   canonical="/categories/"
+  jsonLd={jsonLd}
 >
   <section class="page-hero">
     <div class="container">
+      <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Categories' }]} />
       <p class="section-eyebrow">Categories</p>
       <h1>Browse by topic</h1>
       <p>Pick a category to find tutorials and notes that match what you’re learning right now.</p>
@@ -21,7 +41,7 @@ import { categories } from '../../data/site';
       {
         categories.map((category) => (
           <a class="category-card" href={`/categories/${category.slug}/`}>
-            <h3>{category.name}</h3>
+            <h2>{category.name}</h2>
             <p>{category.description}</p>
           </a>
         ))

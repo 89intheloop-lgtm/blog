@@ -7,6 +7,7 @@ import { getCollection } from 'astro:content';
 import { categories, siteConfig } from '../data/site';
 import { projects } from '../data/projects';
 import { getCategoryName } from '../utils/categories';
+import { breadcrumbJsonLd, webPageJsonLd } from '../utils/seo';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
@@ -15,33 +16,83 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 const latest = posts.slice(0, 3);
 const featuredProjects = projects.filter((p) => p.featured).slice(0, 3);
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  name: siteConfig.name,
-  url: siteConfig.url,
-  description: siteConfig.description,
-  author: {
-    '@type': 'Person',
-    name: siteConfig.author,
+const pageTitle = siteConfig.title;
+const pageDescription = siteConfig.description;
+
+const faqs = [
+  {
+    question: 'What is Build Log about?',
+    answer:
+      'Build Log is a personal technology blog by Saakshi Das covering AI tools, AI automation workflows, coding tutorials, and beginner-friendly web development. The focus is practical projects you can actually ship.',
   },
-  potentialAction: {
-    '@type': 'SearchAction',
-    target: `${siteConfig.url}/blog/?q={search_term_string}`,
-    'query-input': 'required name=search_term_string',
+  {
+    question: 'Who are these tutorials for?',
+    answer:
+      'The articles are written for beginners, students, freelancers, and developers who want clear explanations of AI tools and automation without unnecessary jargon.',
   },
-};
+  {
+    question: 'Do I need advanced coding experience to follow along?',
+    answer:
+      'No. Many guides start with a small, manual task and then automate only one step. You can follow the beginner AI automation and web development tutorials even if you are still learning to code.',
+  },
+  {
+    question: 'How can I deploy a website like this for free?',
+    answer:
+      'This site is a static Astro blog hosted on Netlify. The GitHub + Netlify tutorial walks through putting a static website online at no cost, including build settings and common beginner mistakes.',
+  },
+];
+
+const jsonLd = [
+  webPageJsonLd({
+    type: 'WebPage',
+    path: '/',
+    name: pageTitle,
+    description: pageDescription,
+  }),
+  breadcrumbJsonLd([{ name: 'Home', path: '/' }]),
+  {
+    '@type': 'Blog',
+    '@id': `${siteConfig.url}/#blog`,
+    name: siteConfig.name,
+    url: `${siteConfig.url}/blog/`,
+    description: pageDescription,
+    author: { '@id': `${siteConfig.url}/#person` },
+    publisher: { '@id': `${siteConfig.url}/#organization` },
+    blogPost: latest.map((post) => ({
+      '@type': 'BlogPosting',
+      headline: post.data.title,
+      url: `${siteConfig.url}/blog/${post.slug}/`,
+      datePublished: post.data.pubDate.toISOString(),
+    })),
+  },
+  {
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((faq) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.answer,
+      },
+    })),
+  },
+];
 ---
 
-<BaseLayout jsonLd={jsonLd}>
+<BaseLayout
+  seoTitle={pageTitle}
+  description={pageDescription}
+  canonical="/"
+  jsonLd={jsonLd}
+>
   <section class="hero">
     <div class="container hero-inner">
       <div>
         <p class="hero-brand">{siteConfig.name}</p>
         <h1 class="hero-title">Building With AI, Code &amp; Automation</h1>
         <p class="hero-desc">
-          I document what I learn while building AI-powered applications, automation workflows,
-          developer tools, and practical software projects.
+          Tutorials and build notes on AI tools, automation workflows, and practical coding
+          projects — written for beginners and developers who want to ship.
         </p>
         <div class="hero-actions">
           <a class="btn btn-primary" href="/blog/">Read Articles</a>
@@ -65,11 +116,14 @@ const jsonLd = {
       <div class="section-head">
         <p class="section-eyebrow">Latest Articles</p>
         <h2 class="section-title">Fresh notes from the workshop</h2>
-        <p class="section-lead">Practical write-ups on AI tools, coding, and shipping projects.</p>
+        <p class="section-lead">
+          Start with AI tools for developers, beginner automation workflows, or free GitHub and
+          Netlify deployment.
+        </p>
       </div>
       <div class="card-grid cols-3">
         {
-          latest.map((post) => (
+          latest.map((post, index) => (
             <ArticleCard
               title={post.data.title}
               description={post.data.description}
@@ -78,6 +132,7 @@ const jsonLd = {
               date={post.data.pubDate}
               readingTime={post.data.readingTime}
               image={post.data.heroImage}
+              priority={index === 0}
             />
           ))
         }
@@ -109,7 +164,7 @@ const jsonLd = {
       <div class="section-head">
         <p class="section-eyebrow">Categories</p>
         <h2 class="section-title">Find a topic that fits</h2>
-        <p class="section-lead">Jump into AI tools, automation, beginner guides, and more.</p>
+        <p class="section-lead">Jump into AI tools, automation, beginner coding guides, and more.</p>
       </div>
       <div class="card-grid cols-3">
         {
@@ -154,6 +209,26 @@ const jsonLd = {
           <a href={siteConfig.social.twitter} target="_blank" rel="noopener noreferrer">X</a>
           <a href={siteConfig.social.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0;">
+    <div class="container">
+      <div class="section-head">
+        <p class="section-eyebrow">FAQ</p>
+        <h2 class="section-title">Common questions</h2>
+        <p class="section-lead">Quick answers before you browse the tutorials.</p>
+      </div>
+      <div class="faq-list">
+        {
+          faqs.map((faq) => (
+            <details class="faq-item">
+              <summary>{faq.question}</summary>
+              <p>{faq.answer}</p>
+            </details>
+          ))
+        }
       </div>
     </div>
   </section>

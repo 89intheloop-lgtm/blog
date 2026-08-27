@@ -1,22 +1,52 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
 import { getCollection } from 'astro:content';
-import { categories } from '../../data/site';
+import { categories, siteConfig } from '../../data/site';
 import { getCategoryName } from '../../utils/categories';
+import { breadcrumbJsonLd, webPageJsonLd } from '../../utils/seo';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
+
+const title = 'AI, Automation & Coding Tutorials';
+const description =
+  'Articles and tutorials on AI tools for developers, beginner AI automation, web development, free Netlify deployment, and practical coding projects.';
+const jsonLd = [
+  webPageJsonLd({
+    type: 'CollectionPage',
+    path: '/blog/',
+    name: title,
+    description,
+  }),
+  breadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    { name: 'Blog', path: '/blog/' },
+  ]),
+  {
+    '@type': 'ItemList',
+    name: 'Published articles',
+    itemListElement: posts.map((post, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      url: `${siteConfig.url}/blog/${post.slug}/`,
+      name: post.data.title,
+    })),
+  },
+];
 ---
 
 <BaseLayout
-  title="Blog"
-  description="Articles about AI tools, automation, coding, developer productivity, and beginner-friendly programming guides."
+  seoTitle={`${title} | ${siteConfig.name}`}
+  description={description}
   canonical="/blog/"
+  jsonLd={jsonLd}
 >
   <section class="page-hero">
     <div class="container">
+      <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Blog' }]} />
       <p class="section-eyebrow">Blog</p>
       <h1>Articles &amp; tutorials</h1>
       <p>
@@ -34,20 +64,48 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
   </section>
 
   <section class="section" style="padding-top:1rem;">
-    <div class="container card-grid cols-3">
-      {
-        posts.map((post) => (
-          <ArticleCard
-            title={post.data.title}
-            description={post.data.description}
-            href={`/blog/${post.slug}/`}
-            category={getCategoryName(post.data.category)}
-            date={post.data.pubDate}
-            readingTime={post.data.readingTime}
-            image={post.data.heroImage}
-          />
-        ))
-      }
+    <div class="container">
+      <h2 class="section-title" style="margin-bottom:1.25rem;">All published articles</h2>
+      <p class="tag-filter-note" data-tag-filter hidden></p>
+      <div class="card-grid cols-3" data-post-grid>
+        {
+          posts.map((post) => (
+            <ArticleCard
+              title={post.data.title}
+              description={post.data.description}
+              href={`/blog/${post.slug}/`}
+              category={getCategoryName(post.data.category)}
+              date={post.data.pubDate}
+              readingTime={post.data.readingTime}
+              image={post.data.heroImage}
+              tags={post.data.tags}
+            />
+          ))
+        }
+      </div>
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const tag = params.get('tag')?.trim();
+  if (tag) {
+    const note = document.querySelector<HTMLElement>('[data-tag-filter]');
+    const cards = document.querySelectorAll<HTMLElement>('[data-post-tags]');
+    let visible = 0;
+    cards.forEach((card) => {
+      const tags = (card.dataset.postTags || '').split(',').map((item) => item.trim().toLowerCase());
+      const match = tags.includes(tag.toLowerCase());
+      const article = card.closest('article');
+      if (article) article.hidden = !match;
+      if (match) visible += 1;
+    });
+    if (note) {
+      note.hidden = false;
+      note.innerHTML = visible
+        ? `Showing articles tagged <strong>#${tag}</strong>. <a href="/blog/">View all articles</a>`
+        : `No articles tagged <strong>#${tag}</strong>. <a href="/blog/">View all articles</a>`;
+    }
+  }
+</script>

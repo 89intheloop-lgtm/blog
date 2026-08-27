@@ -1,21 +1,54 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import { projects } from '../data/projects';
+import { siteConfig } from '../data/site';
+import { breadcrumbJsonLd, webPageJsonLd } from '../utils/seo';
+
+const title = 'AI & Developer Projects';
+const description =
+  'Featured AI and developer projects including an AI resume reviewer, chatbot, PDF chat tool, automation demos, and productivity utilities — documented as they are built.';
+const jsonLd = [
+  webPageJsonLd({
+    type: 'CollectionPage',
+    path: '/projects/',
+    name: title,
+    description,
+  }),
+  breadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    { name: 'Projects', path: '/projects/' },
+  ]),
+  {
+    '@type': 'ItemList',
+    name: 'Featured AI and developer projects',
+    itemListElement: projects.map((project, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: project.name,
+      description: project.description,
+      url: `${siteConfig.url}/projects/`,
+    })),
+  },
+];
 ---
 
 <BaseLayout
-  title="Projects"
-  description="Featured projects including AI Resume Reviewer, AI Chatbot, AI PDF Chat, automation demos, and developer productivity tools."
+  seoTitle={`${title} | ${siteConfig.name}`}
+  description={description}
   canonical="/projects/"
+  jsonLd={jsonLd}
 >
   <section class="page-hero">
     <div class="container">
+      <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Projects' }]} />
       <p class="section-eyebrow">Projects</p>
       <h1>Featured builds</h1>
       <p>
-        A selection of AI and developer tools I’m building and documenting. Replace the GitHub and
-        demo links with your own repositories when you’re ready.
+        A selection of AI tools and developer experiments I’m building and documenting — from
+        resume review to PDF chat and automation demos. Related write-ups live in the
+        <a href="/blog/">blog</a>.
       </p>
     </div>
   </section>

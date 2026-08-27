@@ -1,8 +1,8 @@
 ---
 title: "5 AI Tools Every Developer Should Know"
-description: "A practical shortlist of AI tools that help with coding, documentation, research, and shipping faster."
+description: "Five AI tools developers can use for coding, documentation, research, and automation — plus a simple way to evaluate whether a tool is worth keeping."
 pubDate: 2025-12-03
-author: "Saakshi das"
+author: "Saakshi Das"
 category: "ai-tools"
 tags: ["ai-tools", "developers", "productivity"]
 heroImage: "/images/posts/ai-tools-developers.svg"
@@ -83,3 +83,5 @@ Ask:
 ## Bottom line
 
 Master a few tools deeply. The developers who benefit most from AI are usually the ones who already understand the problem they are solving.
+
+Next, put a tool to work in a small product with [how to build your first AI-powered web app](/blog/how-to-build-ai-web-app/), or start a workflow from the [beginner's guide to AI automation](/blog/beginners-guide-to-ai-automation/).

@@ -1,19 +1,40 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
 import { siteConfig } from '../data/site';
+import { breadcrumbJsonLd, webPageJsonLd } from '../utils/seo';
+
+const title = `Contact ${siteConfig.author}`;
+const description = `Contact ${siteConfig.author} about AI tools, automation workflows, coding tutorials, portfolio projects, or collaboration ideas.`;
+const jsonLd = [
+  webPageJsonLd({
+    type: 'ContactPage',
+    path: '/contact/',
+    name: title,
+    description,
+  }),
+  breadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    { name: 'Contact', path: '/contact/' },
+  ]),
+];
 ---
 
 <BaseLayout
-  title="Contact"
-  description={`Contact ${siteConfig.author} about AI tools, automation, coding tutorials, or collaboration ideas.`}
+  seoTitle={`${title} | ${siteConfig.name}`}
+  description={description}
   canonical="/contact/"
+  jsonLd={jsonLd}
 >
   <section class="page-hero">
     <div class="container">
+      <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Contact' }]} />
       <p class="section-eyebrow">Contact</p>
       <h1>Say hello</h1>
       <p>
-        Questions, feedback, topic ideas, or collaboration requests are welcome.
+        Questions about AI tools, automation, coding tutorials, or collaboration requests are
+        welcome. You can also email
+        <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>.
       </p>
     </div>
   </section>

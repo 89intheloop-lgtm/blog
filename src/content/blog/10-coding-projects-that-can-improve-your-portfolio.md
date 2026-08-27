@@ -1,8 +1,8 @@
 ---
 title: "10 Coding Projects That Can Improve Your Portfolio"
-description: "Ten practical project ideas for beginners and intermediate developers who want a portfolio that shows real skills."
+description: "Ten practical coding project ideas for beginners and students who want a portfolio that shows real skills in AI, automation, and web development."
 pubDate: 2026-04-14
-author: "Saakshi das"
+author: "Saakshi Das"
 category: "beginner-guides"
 tags: ["portfolio", "projects", "coding", "students"]
 heroImage: "/images/posts/portfolio-projects.svg"
@@ -98,3 +98,5 @@ Three polished projects with live demos often beat ten screenshots.
 4. Write a case-study style README for each
 
 That combination already tells a clear story: you can learn, build, explain, and ship.
+
+This blog is project #2 on the list. After you publish it, [deploy it free with GitHub and Netlify](/blog/github-netlify-deploy-your-website-for-free/), then add an [AI-powered web app](/blog/how-to-build-ai-web-app/).

@@ -1,8 +1,10 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
 import { getCollection } from 'astro:content';
-import { categories } from '../../data/site';
+import { categories, siteConfig } from '../../data/site';
+import { breadcrumbJsonLd, webPageJsonLd } from '../../utils/seo';
 
 export function getStaticPaths() {
   return categories.map((category) => ({
@@ -15,20 +17,60 @@ const { category } = Astro.props;
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .filter((post) => post.data.category === category.slug)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const empty = posts.length === 0;
+const title = category.seoTitle;
+const description = category.seoDescription;
+const jsonLd = empty
+  ? []
+  : [
+      webPageJsonLd({
+        type: 'CollectionPage',
+        path: `/categories/${category.slug}/`,
+        name: category.title,
+        description,
+      }),
+      breadcrumbJsonLd([
+        { name: 'Home', path: '/' },
+        { name: 'Categories', path: '/categories/' },
+        { name: category.name, path: `/categories/${category.slug}/` },
+      ]),
+      {
+        '@type': 'ItemList',
+        name: category.title,
+        itemListElement: posts.map((post, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          url: `${siteConfig.url}/blog/${post.slug}/`,
+          name: post.data.title,
+        })),
+      },
+    ];
 ---
 
 <BaseLayout
-  title={category.name}
-  description={category.description}
+  seoTitle={title}
+  description={description}
   canonical={`/categories/${category.slug}/`}
+  noindex={empty}
+  jsonLd={jsonLd}
 >
   <section class="page-hero">
     <div class="container">
+      <Breadcrumbs
+        items={[
+          { label: 'Home', href: '/' },
+          { label: 'Categories', href: '/categories/' },
+          { label: category.name },
+        ]}
+      />
       <p class="section-eyebrow">Category</p>
       <h1>{category.name}</h1>
       <p>{category.description}</p>
       <p style="margin-top:1rem;">
-        <a href="/categories/">← All categories</a>
+        <a href="/categories/">All categories</a>
+        {' · '}
+        <a href="/blog/">All articles</a>
       </p>
     </div>
   </section>

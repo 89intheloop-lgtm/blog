@@ -1,11 +1,13 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import TableOfContents from '../../components/TableOfContents.astro';
 import ShareButtons from '../../components/ShareButtons.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
 import { siteConfig } from '../../data/site';
 import { getCategoryName } from '../../utils/categories';
+import { absoluteUrl, breadcrumbJsonLd, readingTimeIso, webPageJsonLd } from '../../utils/seo';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
@@ -36,31 +38,58 @@ const related = allPosts
   .slice(0, 3);
 
 const canonical = `/blog/${post.slug}/`;
-const pageUrl = new URL(canonical, siteConfig.url).toString();
+const pageUrl = absoluteUrl(canonical);
+const categoryName = getCategoryName(post.data.category);
 const formatted = post.data.pubDate.toLocaleDateString('en-US', {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
 });
+const wordCount = post.body.split(/\s+/).filter(Boolean).length;
+const imageUrl = post.data.heroImage ? absoluteUrl(post.data.heroImage) : absoluteUrl(siteConfig.defaultOgImage);
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'BlogPosting',
-  headline: post.data.title,
-  description: post.data.description,
-  image: post.data.heroImage ? new URL(post.data.heroImage, siteConfig.url).toString() : undefined,
-  datePublished: post.data.pubDate.toISOString(),
-  dateModified: (post.data.updatedDate ?? post.data.pubDate).toISOString(),
-  author: {
-    '@type': 'Person',
-    name: post.data.author,
+const jsonLd = [
+  webPageJsonLd({
+    path: canonical,
+    name: post.data.title,
+    description: post.data.description,
+  }),
+  breadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    { name: 'Blog', path: '/blog/' },
+    { name: categoryName, path: `/categories/${post.data.category}/` },
+    { name: post.data.title, path: canonical },
+  ]),
+  {
+    '@type': 'BlogPosting',
+    headline: post.data.title,
+    description: post.data.description,
+    image: {
+      '@type': 'ImageObject',
+      url: imageUrl,
+    },
+    datePublished: post.data.pubDate.toISOString(),
+    dateModified: (post.data.updatedDate ?? post.data.pubDate).toISOString(),
+    author: {
+      '@id': `${siteConfig.url}/#person`,
+      '@type': 'Person',
+      name: post.data.author,
+      url: absoluteUrl('/about/'),
+    },
+    publisher: { '@id': `${siteConfig.url}/#organization` },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': pageUrl,
+    },
+    isPartOf: { '@id': `${siteConfig.url}/#blog` },
+    keywords: post.data.tags.join(', '),
+    articleSection: categoryName,
+    inLanguage: siteConfig.language,
+    wordCount,
+    timeRequired: readingTimeIso(post.data.readingTime),
+    url: pageUrl,
   },
-  mainEntityOfPage: {
-    '@type': 'WebPage',
-    '@id': pageUrl,
-  },
-  keywords: post.data.tags.join(', '),
-};
+];
 ---
 
 <BaseLayout
@@ -68,6 +97,7 @@ const jsonLd = {
   description={post.data.description}
   canonical={canonical}
   image={post.data.heroImage}
+  imageAlt={post.data.title}
   type="article"
   publishedTime={post.data.pubDate.toISOString()}
   modifiedTime={(post.data.updatedDate ?? post.data.pubDate).toISOString()}
@@ -80,10 +110,18 @@ const jsonLd = {
     </aside>
 
     <div>
+      <Breadcrumbs
+        items={[
+          { label: 'Home', href: '/' },
+          { label: 'Blog', href: '/blog/' },
+          { label: categoryName, href: `/categories/${post.data.category}/` },
+          { label: post.data.title },
+        ]}
+      />
       <header class="article-hero">
         <div class="meta">
           <a class="pill" href={`/categories/${post.data.category}/`}>
-            {getCategoryName(post.data.category)}
+            {categoryName}
           </a>
           <time datetime={post.data.pubDate.toISOString()}>{formatted}</time>
           {post.data.readingTime && <span>{post.data.readingTime}</span>}
@@ -98,10 +136,11 @@ const jsonLd = {
           <div class="article-cover-lg">
             <img
               src={post.data.heroImage}
-              alt=""
+              alt={`Cover illustration for ${post.data.title}`}
               width="1200"
               height="630"
               loading="eager"
+              fetchpriority="high"
               decoding="async"
             />
           </div>

@@ -15,8 +15,8 @@ export const projects: Project[] = [
     description:
       'Upload a resume and get structured feedback on clarity, keywords, and ATS-friendly formatting using an LLM prompt pipeline.',
     techStack: ['JavaScript', 'OpenAI API', 'HTML/CSS', 'Netlify Functions'],
-    github: 'https://github.com/',
-    demo: 'https://your-blog.netlify.app/',
+    github: 'https://github.com/89intheloop-lgtm',
+    demo: '',
     featured: true,
   },
   {
@@ -25,8 +25,8 @@ export const projects: Project[] = [
     description:
       'A lightweight chatbot UI with conversation memory, streaming responses, and prompt templates for common developer questions.',
     techStack: ['TypeScript', 'Astro', 'LLM API', 'CSS'],
-    github: 'https://github.com/',
-    demo: 'https://your-blog.netlify.app/',
+    github: 'https://github.com/89intheloop-lgtm',
+    demo: '',
     featured: true,
   },
   {
@@ -35,8 +35,8 @@ export const projects: Project[] = [
     description:
       'Chat with PDF documents by chunking text, retrieving relevant passages, and answering with source citations.',
     techStack: ['Python', 'JavaScript', 'Embeddings', 'Static Frontend'],
-    github: 'https://github.com/',
-    demo: 'https://your-blog.netlify.app/',
+    github: 'https://github.com/89intheloop-lgtm',
+    demo: '',
     featured: true,
   },
   {
@@ -45,8 +45,8 @@ export const projects: Project[] = [
     description:
       'A demo workflow that watches a form submission, summarizes it with AI, and routes the result to email or a spreadsheet.',
     techStack: ['n8n / Make', 'Webhooks', 'JavaScript', 'Markdown'],
-    github: 'https://github.com/',
-    demo: 'https://your-blog.netlify.app/',
+    github: 'https://github.com/89intheloop-lgtm',
+    demo: '',
     featured: true,
   },
   {
@@ -55,8 +55,8 @@ export const projects: Project[] = [
     description:
       'A small toolkit of snippets, checklists, and browser utilities that speed up everyday coding and documentation tasks.',
     techStack: ['Vanilla JS', 'Browser APIs', 'CSS', 'Markdown'],
-    github: 'https://github.com/',
-    demo: 'https://your-blog.netlify.app/',
+    github: 'https://github.com/89intheloop-lgtm',
+    demo: '',
     featured: true,
   },
 ];

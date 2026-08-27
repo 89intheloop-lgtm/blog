@@ -1,8 +1,8 @@
 ---
 title: "How to Build Your First AI-Powered Web App"
-description: "A beginner-friendly path from idea to MVP: UI, prompt design, API calls, and deploying a simple AI web app."
+description: "Build your first AI-powered web app: pick a narrow use case, design a prompt, call an API safely, and deploy the frontend on Netlify."
 pubDate: 2026-01-18
-author: "Saakshi das"
+author: "Saakshi Das"
 category: "web-development"
 tags: ["ai", "web-app", "javascript", "beginners"]
 heroImage: "/images/posts/ai-web-app.svg"
@@ -103,3 +103,5 @@ Host the frontend on Netlify. Add backend pieces only when you need them.
 Your first AI web app is done when a friend can open it, paste text, and get a useful result without you explaining anything.
 
 Then — and only then — add accounts, history, or fancy features.
+
+When the frontend is ready, follow [GitHub + Netlify: deploy your website for free](/blog/github-netlify-deploy-your-website-for-free/). For tool choices, see [5 AI tools every developer should know](/blog/5-ai-tools-every-developer-should-know/).

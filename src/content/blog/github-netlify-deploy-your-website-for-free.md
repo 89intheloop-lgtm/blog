@@ -1,8 +1,8 @@
 ---
 title: "GitHub + Netlify: Deploy Your Website for Free"
-description: "A complete beginner walkthrough for putting a static website online with GitHub and Netlify."
+description: "A beginner walkthrough for putting a static website online for free with GitHub and Netlify, including build settings and common mistakes."
 pubDate: 2026-02-09
-author: "Saakshi das"
+author: "Saakshi Das"
 category: "web-development"
 tags: ["netlify", "github", "deployment", "beginners"]
 heroImage: "/images/posts/github-netlify.svg"
@@ -89,3 +89,5 @@ Netlify rebuilds automatically.
 ## Next step
 
 Once the free Netlify URL works, you can connect a custom domain from the Netlify domain settings. No backend required.
+
+After the site is live, update your canonical URL and submit `sitemap-index.xml` to Google Search Console. If you are also building an app to deploy, see [how to build your first AI-powered web app](/blog/how-to-build-ai-web-app/).

@@ -1,8 +1,8 @@
 ---
 title: "How I Started Learning AI Automation"
-description: "The honest path from curiosity to building small AI workflows that actually save time."
+description: "How I went from curious beginner to building small AI automation workflows that save time — including the first script I actually used."
 pubDate: 2025-11-12
-author: "Saakshi das"
+author: "Saakshi Das"
 category: "learning-journey"
 tags: ["ai", "automation", "beginners", "learning"]
 heroImage: "/images/posts/started-ai-automation.svg"
@@ -67,3 +67,5 @@ This blog exists because writing forced me to clarify each step.
 ## Final thought
 
 Learning AI automation is less about knowing every tool and more about building judgment: when AI helps, when it hallucinates, and when a normal script is enough.
+
+If you want a practical next step, read the [beginner's guide to AI automation](/blog/beginners-guide-to-ai-automation/) or the shortlist of [AI tools every developer should know](/blog/5-ai-tools-every-developer-should-know/).

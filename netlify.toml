@@ -2,11 +2,61 @@
   command = "npm run build"
   publish = "dist"
 
+[build.environment]
+  NODE_VERSION = "20"
+
+[[redirects]]
+  from = "/sitemap.xml"
+  to = "/sitemap-index.xml"
+  status = 200
+  force = false
+
+[[redirects]]
+  from = "/blog"
+  to = "/blog/"
+  status = 301
+  force = false
+
+[[redirects]]
+  from = "/about"
+  to = "/about/"
+  status = 301
+  force = false
+
+[[redirects]]
+  from = "/projects"
+  to = "/projects/"
+  status = 301
+  force = false
+
+[[redirects]]
+  from = "/contact"
+  to = "/contact/"
+  status = 301
+  force = false
+
+[[redirects]]
+  from = "/categories"
+  to = "/categories/"
+  status = 301
+  force = false
+
 [[redirects]]
   from = "/blog/:slug"
   to = "/blog/:slug/"
   status = 301
   force = false
+
+[[redirects]]
+  from = "/categories/:category"
+  to = "/categories/:category/"
+  status = 301
+  force = false
+
+[[redirects]]
+  from = "/*"
+  to = "/404.html"
+  status = 404
 
 [[headers]]
   for = "/*"
@@ -14,8 +64,40 @@
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    X-DNS-Prefetch-Control = "on"
 
 [[headers]]
   for = "/_astro/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/favicon.svg"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+[[headers]]
+  for = "/sitemap-index.xml"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/sitemap-0.xml"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/robots.txt"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/rss.xml"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"

@@ -1,15 +1,40 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
 import { siteConfig } from '../data/site';
+import { breadcrumbJsonLd, webPageJsonLd } from '../utils/seo';
+
+const title = `About ${siteConfig.author} — Learning AI, Code & Automation`;
+const description = `Meet ${siteConfig.author}, the creator of ${siteConfig.name}. A beginner-friendly blog about AI tools, automation workflows, coding tutorials, and shipping software in public.`;
+const jsonLd = [
+  webPageJsonLd({
+    type: 'AboutPage',
+    path: '/about/',
+    name: title,
+    description,
+  }),
+  breadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    { name: 'About', path: '/about/' },
+  ]),
+  {
+    '@type': 'ProfilePage',
+    url: `${siteConfig.url}/about/`,
+    name: title,
+    mainEntity: { '@id': `${siteConfig.url}/#person` },
+  },
+];
 ---
 
 <BaseLayout
-  title="About"
-  description={`Learn more about ${siteConfig.author}, the creator of ${siteConfig.name} — a blog about AI tools, automation, and coding.`}
+  seoTitle={`${title} | ${siteConfig.name}`}
+  description={description}
   canonical="/about/"
+  jsonLd={jsonLd}
 >
   <section class="page-hero">
     <div class="container">
+      <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'About' }]} />
       <p class="section-eyebrow">About</p>
       <h1>Hi, I’m {siteConfig.author}</h1>
       <p>
@@ -27,6 +52,11 @@ import { siteConfig } from '../data/site';
           When I started learning AI automation and modern web development, I wanted clear,
           beginner-friendly explanations with real examples. This site is that notebook made
           public.
+        </p>
+        <p>
+          If you are looking for <a href="/blog/">AI and coding tutorials</a>, start with the
+          latest articles. For project ideas, see the
+          <a href="/projects/">featured AI builds</a>.
         </p>
         <h2>Who it’s for</h2>
         <ul>

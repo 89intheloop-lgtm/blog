@@ -175,12 +175,11 @@ Edit `src/data/site.ts`:
 - Author name
 - Email
 - Social links
-- Canonical site URL
+- Canonical site URL (or set `PUBLIC_SITE_URL` / Netlify’s `URL` at build time)
 
-Also update:
+The production site URL is picked up automatically on Netlify from the `URL` environment variable. To force a domain locally or in CI, set `PUBLIC_SITE_URL`.
 
-- `astro.config.mjs` → `SITE_URL`
-- `public/robots.txt` → sitemap URL
+`robots.txt` and the sitemap are generated at build time, so you no longer need to edit `public/robots.txt`.
 
 ## Netlify settings
 
@@ -213,7 +212,7 @@ Contact and newsletter forms use **Netlify Forms** (`data-netlify="true"`). Afte
 1. In Netlify, open your site → **Domain management**
 2. Click **Add a domain**
 3. Follow Netlify’s DNS instructions for your domain provider
-4. Update `SITE_URL` in `astro.config.mjs` and the URL in `src/data/site.ts` + `public/robots.txt`
+4. Netlify’s production `URL` is used for canonical tags, sitemap, and robots.txt. To override it, set `PUBLIC_SITE_URL`.
 5. Redeploy
 
 ## Scripts

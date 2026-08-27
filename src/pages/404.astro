@@ -1,10 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteConfig } from '../data/site';
 ---
 
 <BaseLayout
+  seoTitle={`Page not found | ${siteConfig.name}`}
   title="Page not found"
-  description="The page you requested could not be found."
+  description="The page you requested could not be found. Browse AI tools, automation, and coding tutorials on Build Log instead."
   noindex={true}
 >
   <section class="page-hero">

@@ -1,8 +1,8 @@
 ---
 title: "Beginner's Guide to AI Automation"
-description: "A friendly introduction to AI automation concepts, simple workflows, and how to avoid common beginner traps."
+description: "Learn AI automation from scratch: triggers, prompts, no-code vs code, five beginner workflows, and how to keep a human review step."
 pubDate: 2026-03-21
-author: "Saakshi das"
+author: "Saakshi Das"
 category: "ai-automation"
 tags: ["ai-automation", "no-code", "beginners", "workflows"]
 heroImage: "/images/posts/beginner-ai-automation.svg"
@@ -81,3 +81,5 @@ Structured output is easier to automate than free-form paragraphs.
 ## Final advice
 
 If your automation needs constant babysitting, simplify it. Reliability beats sophistication when you are learning.
+
+For the story behind these habits, read [how I started learning AI automation](/blog/how-i-started-learning-ai-automation/). When you are ready to wrap a workflow in a UI, see [how to build your first AI-powered web app](/blog/how-to-build-ai-web-app/).

@@ -1,5 +1,5 @@
 ---
-import { navLinks, siteConfig } from '../data/site';
+import { categories, navLinks, siteConfig } from '../data/site';
 ---
 
 <footer class="site-footer">
@@ -21,20 +21,21 @@ import { navLinks, siteConfig } from '../data/site';
       <h2 style="margin:0 0 0.75rem;font-size:0.9rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);">Explore</h2>
       <div class="footer-links">
         {navLinks.map((link) => <a href={link.href}>{link.label}</a>)}
-        <a href="/categories/">Categories</a>
+        <a href="/categories/">Browse categories</a>
+        <a href="/rss.xml">RSS feed</a>
       </div>
     </div>
 
     <div>
-      <h2 style="margin:0 0 0.75rem;font-size:0.9rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);">Contact</h2>
+      <h2 style="margin:0 0 0.75rem;font-size:0.9rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);">Topics</h2>
       <div class="footer-links">
-        <a href="/contact/">Send a message</a>
-        <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
+        {categories.map((category) => <a href={`/categories/${category.slug}/`}>{category.name}</a>)}
       </div>
     </div>
   </div>
 
   <div class="container footer-bottom">
     <span>&copy; {new Date().getFullYear()} {siteConfig.author}. Built with Astro.</span>
+    <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
   </div>
 </footer>
