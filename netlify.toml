@@ -5,6 +5,26 @@
 [build.environment]
   NODE_VERSION = "20"
 
+# Prevent Pretty URLs from rewriting /google*.html to an extensionless path
+# that then hits the 404 fallback (Google Search Console requires the exact file).
+[build.processing]
+  skip_processing = false
+
+[build.processing.html]
+  pretty_urls = false
+
+[[redirects]]
+  from = "/googleacf2939e25427803.html"
+  to = "/googleacf2939e25427803.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/googleacf2939e25427803"
+  to = "/googleacf2939e25427803.html"
+  status = 200
+  force = true
+
 [[redirects]]
   from = "/sitemap.xml"
   to = "/sitemap-index.xml"
@@ -57,6 +77,13 @@
   from = "/*"
   to = "/404.html"
   status = 404
+
+[[headers]]
+  for = "/googleacf2939e25427803.html"
+  [headers.values]
+    Content-Type = "text/html; charset=utf-8"
+    Cache-Control = "public, max-age=0, must-revalidate"
+    X-Robots-Tag = "noindex"
 
 [[headers]]
   for = "/*"

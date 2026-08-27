@@ -1,2 +1,7 @@
+# Serve Google Search Console verification at the exact path Google requests.
+# Pretty URLs and the catch-all 404 below must not intercept this file.
+/googleacf2939e25427803.html    /googleacf2939e25427803.html    200!
+/googleacf2939e25427803         /googleacf2939e25427803.html    200!
+
 # Netlify will serve this page for unknown routes
 /*    /404.html   404
