@@ -10,7 +10,7 @@ export const siteConfig = {
   language: 'en',
   twitterHandle: '@saakshidas99',
   defaultOgImage: '/images/og-default.png',
-  googleSiteVerification: '',
+  googleSiteVerification: 'googleacf2939e25427803.html', 
   social: {
     github: 'https://github.com/89intheloop-lgtm',
     freelancer: 'https://www.freelancer.com/u/sakshismm',
