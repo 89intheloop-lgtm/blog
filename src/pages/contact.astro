@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteConfig } from '../data/site';
+---
+
+<BaseLayout
+  title="Contact"
+  description={`Contact ${siteConfig.author} about AI tools, automation, coding tutorials, or collaboration ideas.`}
+  canonical="/contact/"
+>
+  <section class="page-hero">
+    <div class="container">
+      <p class="section-eyebrow">Contact</p>
+      <h1>Say hello</h1>
+      <p>
+        Questions, feedback, topic ideas, or collaboration requests are welcome.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0;">
+    <div class="container" style="max-width:720px;">
+      <form class="contact-form panel" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="contact" />
+        <p class="sr-only">
+          <label>
+            Don’t fill this out if you’re human: <input name="bot-field" />
+          </label>
+        </p>
+        <label>
+          Name
+          <input type="text" name="name" required autocomplete="name" placeholder="Your name" />
+        </label>
+        <label>
+          Email
+          <input type="email" name="email" required autocomplete="email" placeholder="you@example.com" />
+        </label>
+        <label>
+          Message
+          <textarea name="message" required placeholder="What would you like to talk about?"></textarea>
+        </label>
+        <button class="btn btn-primary" type="submit">Send message</button>
+        <p class="form-note">
+          After deployment, submissions appear in your Netlify dashboard under Forms.
+        </p>
+      </form>
+    </div>
+  </section>
+</BaseLayout>

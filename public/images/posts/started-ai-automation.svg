@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
+  <rect width="1200" height="630" fill="#0F2A30"/>
+  <path d="M0 430C220 360 420 520 600 450C780 380 980 300 1200 360V630H0V430Z" fill="#3DDC97" fill-opacity="0.18"/>
+  <text x="80" y="280" fill="#E8F1F2" font-family="Georgia, serif" font-size="52">Learning AI Automation</text>
+  <text x="80" y="350" fill="#9BB4B8" font-family="system-ui, sans-serif" font-size="26">Where curiosity became a workflow</text>
+</svg>

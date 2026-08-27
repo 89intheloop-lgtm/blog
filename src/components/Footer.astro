@@ -1,0 +1,40 @@
+---
+import { navLinks, siteConfig } from '../data/site';
+---
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <p class="footer-brand">{siteConfig.name}</p>
+      <p style="margin:0;color:var(--text-muted);max-width:34ch;">
+        Notes on AI tools, automation, coding, and shipping useful software.
+      </p>
+      <div class="social-links" style="margin-top:1rem;">
+        <a href={siteConfig.social.github} rel="noopener noreferrer" target="_blank">GitHub</a>
+        <a href={siteConfig.social.twitter} rel="noopener noreferrer" target="_blank">X / Twitter</a>
+        <a href={siteConfig.social.linkedin} rel="noopener noreferrer" target="_blank">LinkedIn</a>
+        <a href={siteConfig.social.youtube} rel="noopener noreferrer" target="_blank">YouTube</a>
+      </div>
+    </div>
+
+    <div>
+      <h2 style="margin:0 0 0.75rem;font-size:0.9rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);">Explore</h2>
+      <div class="footer-links">
+        {navLinks.map((link) => <a href={link.href}>{link.label}</a>)}
+        <a href="/categories/">Categories</a>
+      </div>
+    </div>
+
+    <div>
+      <h2 style="margin:0 0 0.75rem;font-size:0.9rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);">Contact</h2>
+      <div class="footer-links">
+        <a href="/contact/">Send a message</a>
+        <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container footer-bottom">
+    <span>&copy; {new Date().getFullYear()} {siteConfig.author}. Built with Astro.</span>
+  </div>
+</footer>

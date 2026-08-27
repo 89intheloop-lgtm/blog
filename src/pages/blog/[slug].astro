@@ -1,0 +1,171 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TableOfContents from '../../components/TableOfContents.astro';
+import ShareButtons from '../../components/ShareButtons.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { siteConfig } from '../../data/site';
+import { getCategoryName } from '../../utils/categories';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+
+const allPosts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
+);
+
+const index = allPosts.findIndex((p) => p.slug === post.slug);
+const prev = index > 0 ? allPosts[index - 1] : null;
+const next = index < allPosts.length - 1 ? allPosts[index + 1] : null;
+
+const related = allPosts
+  .filter((p) => p.slug !== post.slug)
+  .filter(
+    (p) =>
+      p.data.category === post.data.category ||
+      p.data.tags.some((tag) => post.data.tags.includes(tag))
+  )
+  .slice(0, 3);
+
+const canonical = `/blog/${post.slug}/`;
+const pageUrl = new URL(canonical, siteConfig.url).toString();
+const formatted = post.data.pubDate.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.data.title,
+  description: post.data.description,
+  image: post.data.heroImage ? new URL(post.data.heroImage, siteConfig.url).toString() : undefined,
+  datePublished: post.data.pubDate.toISOString(),
+  dateModified: (post.data.updatedDate ?? post.data.pubDate).toISOString(),
+  author: {
+    '@type': 'Person',
+    name: post.data.author,
+  },
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': pageUrl,
+  },
+  keywords: post.data.tags.join(', '),
+};
+---
+
+<BaseLayout
+  title={post.data.title}
+  description={post.data.description}
+  canonical={canonical}
+  image={post.data.heroImage}
+  type="article"
+  publishedTime={post.data.pubDate.toISOString()}
+  modifiedTime={(post.data.updatedDate ?? post.data.pubDate).toISOString()}
+  tags={post.data.tags}
+  jsonLd={jsonLd}
+>
+  <article class="container article-layout">
+    <aside>
+      <TableOfContents headings={headings} />
+    </aside>
+
+    <div>
+      <header class="article-hero">
+        <div class="meta">
+          <a class="pill" href={`/categories/${post.data.category}/`}>
+            {getCategoryName(post.data.category)}
+          </a>
+          <time datetime={post.data.pubDate.toISOString()}>{formatted}</time>
+          {post.data.readingTime && <span>{post.data.readingTime}</span>}
+          <span>By {post.data.author}</span>
+        </div>
+        <h1>{post.data.title}</h1>
+        <p style="margin:1rem 0 0;color:var(--text-muted);font-size:1.12rem;">{post.data.description}</p>
+      </header>
+
+      {
+        post.data.heroImage && (
+          <div class="article-cover-lg">
+            <img
+              src={post.data.heroImage}
+              alt=""
+              width="1200"
+              height="630"
+              loading="eager"
+              decoding="async"
+            />
+          </div>
+        )
+      }
+
+      <div class="prose">
+        <Content />
+      </div>
+
+      <ul class="tag-list">
+        {
+          post.data.tags.map((tag) => (
+            <li>
+              <a href={`/blog/?tag=${encodeURIComponent(tag)}`}>#{tag}</a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <ShareButtons title={post.data.title} url={pageUrl} />
+
+      <nav class="pager" aria-label="Previous and next articles">
+        {
+          prev && (
+            <a href={`/blog/${prev.slug}/`}>
+              <span>Previous</span>
+              <strong>{prev.data.title}</strong>
+            </a>
+          )
+        }
+        {
+          next && (
+            <a href={`/blog/${next.slug}/`}>
+              <span>Next</span>
+              <strong>{next.data.title}</strong>
+            </a>
+          )
+        }
+      </nav>
+
+      {
+        related.length > 0 && (
+          <section style="margin-top:3rem;">
+            <div class="section-head">
+              <p class="section-eyebrow">Keep reading</p>
+              <h2 class="section-title">Related articles</h2>
+            </div>
+            <div class="card-grid cols-3">
+              {related.map((item) => (
+                <ArticleCard
+                  title={item.data.title}
+                  description={item.data.description}
+                  href={`/blog/${item.slug}/`}
+                  category={getCategoryName(item.data.category)}
+                  date={item.data.pubDate}
+                  readingTime={item.data.readingTime}
+                  image={item.data.heroImage}
+                />
+              ))}
+            </div>
+          </section>
+        )
+      }
+    </div>
+  </article>
+</BaseLayout>

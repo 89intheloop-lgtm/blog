@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { projects } from '../data/projects';
+---
+
+<BaseLayout
+  title="Projects"
+  description="Featured projects including AI Resume Reviewer, AI Chatbot, AI PDF Chat, automation demos, and developer productivity tools."
+  canonical="/projects/"
+>
+  <section class="page-hero">
+    <div class="container">
+      <p class="section-eyebrow">Projects</p>
+      <h1>Featured builds</h1>
+      <p>
+        A selection of AI and developer tools I’m building and documenting. Replace the GitHub and
+        demo links with your own repositories when you’re ready.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:1rem;">
+    <div class="container card-grid cols-2">
+      {projects.map((project) => <ProjectCard project={project} />)}
+    </div>
+  </section>
+</BaseLayout>

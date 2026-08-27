@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { getCollection } from 'astro:content';
+import { categories } from '../../data/site';
+
+export function getStaticPaths() {
+  return categories.map((category) => ({
+    params: { category: category.slug },
+    props: { category },
+  }));
+}
+
+const { category } = Astro.props;
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .filter((post) => post.data.category === category.slug)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<BaseLayout
+  title={category.name}
+  description={category.description}
+  canonical={`/categories/${category.slug}/`}
+>
+  <section class="page-hero">
+    <div class="container">
+      <p class="section-eyebrow">Category</p>
+      <h1>{category.name}</h1>
+      <p>{category.description}</p>
+      <p style="margin-top:1rem;">
+        <a href="/categories/">← All categories</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:1rem;">
+    <div class="container">
+      {
+        posts.length ? (
+          <div class="card-grid cols-3">
+            {posts.map((post) => (
+              <ArticleCard
+                title={post.data.title}
+                description={post.data.description}
+                href={`/blog/${post.slug}/`}
+                category={category.name}
+                date={post.data.pubDate}
+                readingTime={post.data.readingTime}
+                image={post.data.heroImage}
+              />
+            ))}
+          </div>
+        ) : (
+          <div class="empty-state">No articles in this category yet. Check back soon.</div>
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,36 @@
+---
+---
+
+<section class="section">
+  <div class="container">
+    <div class="newsletter">
+      <div class="section-head" style="margin-bottom:1.25rem;">
+        <p class="section-eyebrow">Newsletter</p>
+        <h2 class="section-title">Get new tutorials in your inbox</h2>
+        <p class="section-lead">
+          Occasional notes on AI tools, automation workflows, and practical coding projects. No spam.
+        </p>
+      </div>
+      <form name="newsletter" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="newsletter" />
+        <p class="sr-only">
+          <label>
+            Don’t fill this out if you’re human: <input name="bot-field" />
+          </label>
+        </p>
+        <div class="form-row two">
+          <label>
+            Name
+            <input type="text" name="name" autocomplete="name" placeholder="Your name" />
+          </label>
+          <label>
+            Email
+            <input type="email" name="email" required autocomplete="email" placeholder="you@example.com" />
+          </label>
+        </div>
+        <button class="btn btn-primary" type="submit">Subscribe</button>
+        <p class="form-note">Powered by Netlify Forms — free on Netlify hosting.</p>
+      </form>
+    </div>
+  </div>
+</section>

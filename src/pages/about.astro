@@ -1,0 +1,67 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteConfig } from '../data/site';
+---
+
+<BaseLayout
+  title="About"
+  description={`Learn more about ${siteConfig.author}, the creator of ${siteConfig.name} — a blog about AI tools, automation, and coding.`}
+  canonical="/about/"
+>
+  <section class="page-hero">
+    <div class="container">
+      <p class="section-eyebrow">About</p>
+      <h1>Hi, I’m {siteConfig.author}</h1>
+      <p>
+        I write about building with AI, learning to code, and turning ideas into working software —
+        especially automation that saves time.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0;">
+    <div class="container split-grid">
+      <div class="prose">
+        <h2>Why this blog exists</h2>
+        <p>
+          When I started learning AI automation and modern web development, I wanted clear,
+          beginner-friendly explanations with real examples. This site is that notebook made
+          public.
+        </p>
+        <h2>Who it’s for</h2>
+        <ul>
+          <li>Beginners learning to code</li>
+          <li>Developers exploring AI tools</li>
+          <li>Students building portfolio projects</li>
+          <li>Freelancers looking for productivity workflows</li>
+          <li>Anyone curious about no-code / low-code automation</li>
+        </ul>
+        <h2>What I focus on</h2>
+        <p>
+          AI tools and tutorials, AI-powered apps, developer productivity, practical coding
+          projects, and honest notes from experiments that succeed (and ones that don’t).
+        </p>
+        <h2>Let’s connect</h2>
+        <p>
+          Have a question, collaboration idea, or topic request?
+          <a href="/contact/">Send me a message</a>.
+        </p>
+      </div>
+      <aside class="panel">
+        <h2 style="margin-top:0;font-family:var(--font-display);font-size:1.4rem;">Quick facts</h2>
+        <ul style="margin:0;padding-left:1.1rem;color:var(--text-muted);">
+          <li>Building in public</li>
+          <li>Static site on Netlify</li>
+          <li>Markdown-powered articles</li>
+          <li>Beginner-first explanations</li>
+        </ul>
+        <div class="social-links" style="margin-top:1.25rem;">
+          <a href={siteConfig.social.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href={siteConfig.social.twitter} target="_blank" rel="noopener noreferrer">X</a>
+          <a href={siteConfig.social.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href={siteConfig.social.youtube} target="_blank" rel="noopener noreferrer">YouTube</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>

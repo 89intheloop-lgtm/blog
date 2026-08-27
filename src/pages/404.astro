@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Page not found"
+  description="The page you requested could not be found."
+  noindex={true}
+>
+  <section class="page-hero">
+    <div class="container" style="text-align:center;padding-block:4rem;">
+      <p class="section-eyebrow">404</p>
+      <h1>This page wandered off</h1>
+      <p style="margin-inline:auto;">
+        The link may be outdated, or the page might have moved. Try the blog or head back home.
+      </p>
+      <div class="hero-actions" style="justify-content:center;">
+        <a class="btn btn-primary" href="/">Go home</a>
+        <a class="btn btn-secondary" href="/blog/">Browse articles</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

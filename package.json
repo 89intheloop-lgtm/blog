@@ -1,0 +1,17 @@
+{
+  "name": "tech-journey-blog",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Personal technology blog about AI tools, automation, and coding — static site for Netlify",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.3.1",
+    "astro": "^5.7.10"
+  }
+}

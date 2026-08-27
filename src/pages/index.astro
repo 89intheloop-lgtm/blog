@@ -1,0 +1,162 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import Newsletter from '../components/Newsletter.astro';
+import { getCollection } from 'astro:content';
+import { categories, siteConfig } from '../data/site';
+import { projects } from '../data/projects';
+import { getCategoryName } from '../utils/categories';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const latest = posts.slice(0, 3);
+const featuredProjects = projects.filter((p) => p.featured).slice(0, 3);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: siteConfig.name,
+  url: siteConfig.url,
+  description: siteConfig.description,
+  author: {
+    '@type': 'Person',
+    name: siteConfig.author,
+  },
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: `${siteConfig.url}/blog/?q={search_term_string}`,
+    'query-input': 'required name=search_term_string',
+  },
+};
+---
+
+<BaseLayout jsonLd={jsonLd}>
+  <section class="hero">
+    <div class="container hero-inner">
+      <div>
+        <p class="hero-brand">{siteConfig.name}</p>
+        <h1 class="hero-title">Building With AI, Code &amp; Automation</h1>
+        <p class="hero-desc">
+          I document what I learn while building AI-powered applications, automation workflows,
+          developer tools, and practical software projects.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="/blog/">Read Articles</a>
+          <a class="btn btn-secondary" href="/projects/">View Projects</a>
+        </div>
+      </div>
+      <aside class="hero-panel" aria-label="Blog highlights">
+        <h2>Currently exploring</h2>
+        <div class="hero-stats">
+          <div class="hero-stat"><span>Focus</span><strong>AI + automation</strong></div>
+          <div class="hero-stat"><span>Audience</span><strong>Builders &amp; beginners</strong></div>
+          <div class="hero-stat"><span>Articles</span><strong>{posts.length} published</strong></div>
+          <div class="hero-stat"><span>Hosting</span><strong>Free on Netlify</strong></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <p class="section-eyebrow">Latest Articles</p>
+        <h2 class="section-title">Fresh notes from the workshop</h2>
+        <p class="section-lead">Practical write-ups on AI tools, coding, and shipping projects.</p>
+      </div>
+      <div class="card-grid cols-3">
+        {
+          latest.map((post) => (
+            <ArticleCard
+              title={post.data.title}
+              description={post.data.description}
+              href={`/blog/${post.slug}/`}
+              category={getCategoryName(post.data.category)}
+              date={post.data.pubDate}
+              readingTime={post.data.readingTime}
+              image={post.data.heroImage}
+            />
+          ))
+        }
+      </div>
+      <p style="margin-top:1.5rem;">
+        <a class="btn btn-secondary" href="/blog/">Browse all articles</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0;">
+    <div class="container">
+      <div class="section-head">
+        <p class="section-eyebrow">Featured Projects</p>
+        <h2 class="section-title">Things I’m building in public</h2>
+        <p class="section-lead">Small, useful experiments that connect AI with everyday developer work.</p>
+      </div>
+      <div class="card-grid cols-3">
+        {featuredProjects.map((project) => <ProjectCard project={project} />)}
+      </div>
+      <p style="margin-top:1.5rem;">
+        <a class="btn btn-secondary" href="/projects/">See all projects</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0;">
+    <div class="container">
+      <div class="section-head">
+        <p class="section-eyebrow">Categories</p>
+        <h2 class="section-title">Find a topic that fits</h2>
+        <p class="section-lead">Jump into AI tools, automation, beginner guides, and more.</p>
+      </div>
+      <div class="card-grid cols-3">
+        {
+          categories.map((category) => (
+            <a class="category-card" href={`/categories/${category.slug}/`}>
+              <h3>{category.name}</h3>
+              <p>{category.description}</p>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0;">
+    <div class="container about-grid">
+      <div>
+        <div class="section-head">
+          <p class="section-eyebrow">About me</p>
+          <h2 class="section-title">Learning in public, one build at a time</h2>
+        </div>
+        <p style="color:var(--text-muted);margin-top:0;">
+          I’m {siteConfig.author}, a builder documenting how AI tools, automation, and solid coding
+          fundamentals come together in real projects. This blog is written for beginners,
+          students, freelancers, and developers who want practical explanations—not jargon.
+        </p>
+        <p style="margin-top:1rem;">
+          <a class="btn btn-primary" href="/about/">More about me</a>
+        </p>
+      </div>
+      <div class="panel">
+        <h3 style="margin-top:0;font-family:var(--font-display);">What you’ll find here</h3>
+        <ul style="margin:0;padding-left:1.1rem;color:var(--text-muted);">
+          <li>Beginner-friendly programming guides</li>
+          <li>AI automation workflows you can recreate</li>
+          <li>Developer productivity tips</li>
+          <li>No-code / low-code experiments</li>
+          <li>Honest notes from my learning journey</li>
+        </ul>
+        <div class="social-links" style="margin-top:1.2rem;">
+          <a href={siteConfig.social.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href={siteConfig.social.twitter} target="_blank" rel="noopener noreferrer">X</a>
+          <a href={siteConfig.social.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Newsletter />
+</BaseLayout>

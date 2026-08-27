@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { getCollection } from 'astro:content';
+import { categories } from '../../data/site';
+import { getCategoryName } from '../../utils/categories';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<BaseLayout
+  title="Blog"
+  description="Articles about AI tools, automation, coding, developer productivity, and beginner-friendly programming guides."
+  canonical="/blog/"
+>
+  <section class="page-hero">
+    <div class="container">
+      <p class="section-eyebrow">Blog</p>
+      <h1>Articles &amp; tutorials</h1>
+      <p>
+        Practical guides on AI automation, web development, and shipping projects. Use search in the
+        navbar or browse by category.
+      </p>
+      <div class="social-links" style="margin-top:1.2rem;">
+        {
+          categories.map((category) => (
+            <a href={`/categories/${category.slug}/`}>{category.name}</a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:1rem;">
+    <div class="container card-grid cols-3">
+      {
+        posts.map((post) => (
+          <ArticleCard
+            title={post.data.title}
+            description={post.data.description}
+            href={`/blog/${post.slug}/`}
+            category={getCategoryName(post.data.category)}
+            date={post.data.pubDate}
+            readingTime={post.data.readingTime}
+            image={post.data.heroImage}
+          />
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>

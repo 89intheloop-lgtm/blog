@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { categories } from '../../data/site';
+---
+
+<BaseLayout
+  title="Categories"
+  description="Browse blog categories covering AI tools, AI automation, web development, beginner guides, and developer productivity."
+  canonical="/categories/"
+>
+  <section class="page-hero">
+    <div class="container">
+      <p class="section-eyebrow">Categories</p>
+      <h1>Browse by topic</h1>
+      <p>Pick a category to find tutorials and notes that match what you’re learning right now.</p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:1rem;">
+    <div class="container card-grid cols-3">
+      {
+        categories.map((category) => (
+          <a class="category-card" href={`/categories/${category.slug}/`}>
+            <h3>{category.name}</h3>
+            <p>{category.description}</p>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>

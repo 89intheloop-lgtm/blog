@@ -1,0 +1,32 @@
+---
+interface Props {
+  title: string;
+  url: string;
+}
+
+const { title, url } = Astro.props;
+const encodedUrl = encodeURIComponent(url);
+const encodedTitle = encodeURIComponent(title);
+---
+
+<div class="share-row" aria-label="Share this article">
+  <a
+    class="btn btn-ghost"
+    href={`https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`}
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    Share on X
+  </a>
+  <a
+    class="btn btn-ghost"
+    href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`}
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    Share on LinkedIn
+  </a>
+  <button class="btn btn-ghost" type="button" data-copy-link data-url={url}>
+    Copy link
+  </button>
+</div>
